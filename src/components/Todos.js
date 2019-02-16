@@ -13,13 +13,33 @@ class Todos extends Component{
     // if (api.status === 200) {
     //   this.setState({todos: JSON.parse(api.response) });
     // }
-    fetch('https://jsonplaceholder.typicode.com/todos').then(
+    fetch('https://my-json-server.typicode.com/neron2150/json-db-test/blob/master/posts',{
+      method: 'POST',
+    body: JSON.stringify({
+      title: 'myTodo',
+      body: 'F*ck eah',
+      userId: 11
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+    }).then(
+      (response)=>response.json()
+    ).then(
+      (data)=>{
+        console.log(data);
+        //this.setState({todos: data })
+      }
+    );
+  
+    fetch('https://my-json-server.typicode.com/neron2150/json-db-test/blob/master/posts').then(
       (response)=>response.json()
     ).then(
       (data)=>{
         console.log(data);
         this.setState({todos: data })}
     );
+
   }
   handleSearch = (event)=> {
     this.setState({inputValue:event.target.value});
