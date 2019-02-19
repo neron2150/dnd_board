@@ -64,6 +64,14 @@ dragStart= (e)=>{
   console.log(e.type);
   e.preventDefault();
 }
+mouseEnter= (e)=>{
+  console.log(e.type);
+  e.preventDefault();
+}
+drop= (e)=>{
+  console.log(e.type);
+  e.preventDefault();
+}
 render() {
 
     return (
@@ -77,6 +85,8 @@ render() {
       onDragLeave ={this.dragLeave}
       onDragOver ={this.dragOver}
       onDragStart = {this.dragStart}
+      onDrop = {this.drop}
+      onMouseEnter= {this.mouseEnter}
       // onMouseDown = {this.onDown}
       // onMouseUp = {this.onUp}
       // onMouseLeave = {this.onUp}

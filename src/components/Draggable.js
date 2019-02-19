@@ -1,15 +1,24 @@
 import React, {Component} from 'react';
+import {DndContext} from './DndContext'
 class Draggable extends Component{
-  render() {
-    return(
-      <div>
-        {this.props.children}
-      </div>
-    );
+  constructor(props){
+    super(props);
+    this.state = {
+
+    }
   }
 
+  render() {
+    return(
+      <DndContext.Consumer>
+        {(value)=> (
+          <div>
+            {this.props.children}
+          </div>
+        )}
+      </DndContext.Consumer>
 
-
-
+    );
+  }
 }
 export default Draggable;

@@ -15,5 +15,10 @@
 }
 
 .app{
-  background-color: #cccccc
+  background-color: #777777;
+  position: inherit;
+}
+.app{
+  background-color: #777777;
+  position: inherit;
 }
