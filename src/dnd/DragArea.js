@@ -21,7 +21,6 @@ class DragArea extends Component {
   }
 
   mouseUp = () => {
-
     this.transformElement(this.state.draggable, 0, 0, 0);
     this.setState({
       dragStart: false,
@@ -32,7 +31,6 @@ class DragArea extends Component {
       ly: 0,
       deg: 0,
     });
-
   }
 
   mouseMove = (e) => {
@@ -61,15 +59,15 @@ class DragArea extends Component {
   }
 
   setDraggable = (draggable) => {
-    this.setState({draggable});
-    console.log('setDraggable',draggable);
+    this.setState({ draggable });
+    console.log('setDraggable', draggable);
   }
 
   render() {
     return (
       <DndContext.Provider
         value={{
-          setDraggable: this.setDraggable
+          setDraggable: this.setDraggable,
         }}
       >
         <div
