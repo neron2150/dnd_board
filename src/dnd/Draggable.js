@@ -3,19 +3,23 @@ import {DndContext} from './DndContext'
 class Draggable extends Component{
   constructor(props){
     super(props);
-    this.state = {
 
-    }
   }
 
   render() {
     return(
       <DndContext.Consumer>
-        {(value)=> (
-          <div>
-            {this.props.children}
-          </div>
-        )}
+        {(value)=> {
+          return (
+            <div
+              onMouseDown = {value.setDraggable}
+              ref={(el) => {DndContext._currentValue.draggable = el;}}
+
+            >
+              {this.props.children}
+            </div>
+          );
+        }}
       </DndContext.Consumer>
 
     );

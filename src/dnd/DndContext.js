@@ -1,2 +1,2 @@
 import React from 'react';
-export const DndContext = React.createContext();
+export const DndContext = React.createContext({draggable:null});
