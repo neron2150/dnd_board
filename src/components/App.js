@@ -12,8 +12,11 @@ class App extends Component {
     return (
       <DragArea >
         <DropableContainer>
-          <Draggable>
-          </Draggable>
+        <Draggable/>
+        <Draggable/>
+        <Draggable/>
+        <Draggable/>
+        
         </DropableContainer>
         <Movable0/>
         <Movable/>

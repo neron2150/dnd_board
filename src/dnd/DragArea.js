@@ -11,12 +11,27 @@ class DragArea extends Component{
     ly:0,
     deg:0,
   }
-  mouseDown = () => {
-    this.setState({dragStart:true})
+  mouseDown = (e) => {
+
+    this.setState({
+      dragStart:true,
+      draggable:DndContext._currentValue.draggable,
+      ly:e.clientY,
+      lx:e.clientX
+    })
   }
   mouseUp = () => {
-    this.setState({dragStart:false,draggable:null})
-
+    this.setState({
+      dragStart:false,
+      draggable:null,
+      x:0,
+      y:0,
+      lx:0,
+      ly:0,
+      deg:0
+    });
+    this.transformElement(this.state.draggable,0,0,0);
+    DndContext._currentValue.draggable = null;
   }
   mouseMove = (e) => {
     if(this.state.dragStart && this.state.draggable){
@@ -39,6 +54,7 @@ class DragArea extends Component{
       }
   }
   transformElement = (element, x, y, deg) => {
+    if(element)
     element.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`;
 
   }

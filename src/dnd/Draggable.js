@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {DndContext} from './DndContext'
 class Draggable extends Component{
-
+  mouseDown = () =>{
+    DndContext._currentValue.draggable = this.container;
+  }
   render() {
     return(
       <DndContext.Consumer>
@@ -9,8 +11,8 @@ class Draggable extends Component{
           return (
             <div
               className = 'drag'
-              onMouseDown = {value.setDraggable}
-              ref={(el) => {DndContext._currentValue.draggable = el;}}
+              onMouseDown = {this.mouseDown}
+              ref={(el) => { this.container = el;}}
             >
               {this.props.children}
             </div>
