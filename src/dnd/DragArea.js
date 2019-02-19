@@ -4,7 +4,12 @@ import {DndContext} from './DndContext'
 class DragArea extends Component{
   state = {
     dragStart:false,
-    draggable:null
+    draggable:null,
+    x:0,
+    y:0,
+    lx:0,
+    ly:0,
+    deg:0,
   }
   mouseDown = () => {
     this.setState({dragStart:true})
@@ -13,16 +18,31 @@ class DragArea extends Component{
     this.setState({dragStart:false,draggable:null})
 
   }
-  mouseMove = () => {
-
+  mouseMove = (e) => {
+    if(this.state.dragStart && this.state.draggable){
+      const{lx,ly,deg} = this.state;
+      let x = this.state.x +e.clientX - lx;
+      let y = this.state.y +e.clientY - ly;
+      this.transformElement(this.state.draggable,x,y,deg);
+      this.setState({
+        x,
+        y,
+        deg: (e.clientX - lx) / 4,
+        lx:e.clientX,
+        ly:e.clientY
+      });
+    } else {
+        this.setState({
+           ly:e.clientY,
+           lx:e.clientX,
+        });
+      }
   }
-  dragElement = (element, x, y, deg) => {
+  transformElement = (element, x, y, deg) => {
     element.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`;
 
   }
   setDraggable = () => {
-
-      console.log('3');
     this.setState({draggable:DndContext._currentValue.draggable});
   }
   render() {

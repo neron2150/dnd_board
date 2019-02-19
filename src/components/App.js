@@ -13,7 +13,6 @@ class App extends Component {
       <DragArea >
         <DropableContainer>
           <Draggable>
-            <Movable1/>
           </Draggable>
         </DropableContainer>
         <Movable0/>
