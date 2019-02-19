@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { DndContext } from './DndContext';
 
 class Draggable extends Component {
-  mouseDown = (setDraggable) => () => {
-    console.log('mousedoun',this.container);
+  mouseDown = setDraggable => () => {
+    console.log('mousedoun', this.container);
     setDraggable(this.container);
-
   }
 
   render() {

@@ -8,18 +8,18 @@ import DragArea from '../dnd/DragArea';
 import Draggable from '../dnd/Draggable';
 
 class App extends Component {
-  render(){
+  render() {
     return (
-      <DragArea >
+      <DragArea>
         <DropableContainer>
-        <Draggable/>
-        <Draggable/>
-        <Draggable/>
-        <Draggable/>
-        
+          <Draggable />
+          <Draggable />
+          <Draggable />
+          <Draggable />
+
         </DropableContainer>
-        <Movable0/>
-        <Movable/>
+        <Movable0 />
+        <Movable />
       </DragArea>
     );
   }

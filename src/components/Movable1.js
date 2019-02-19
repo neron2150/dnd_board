@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 class Movable1 extends Component {
 //
 // state = {
@@ -36,73 +37,71 @@ class Movable1 extends Component {
 //     deg:0
 //   });
 // }
-drag = (e)=>{
+drag = (e) => {
   console.log(e.type);
   e.preventDefault();
 }
-dragEnd = (e)=>{
+
+dragEnd = (e) => {
   e.preventDefault();
   console.log(e.type);
 }
-dragEnter = (e)=>{
+
+dragEnter = (e) => {
   e.preventDefault();
   console.log(e.type);
 }
-dragExit= (e)=>{
+
+dragExit= (e) => {
   e.preventDefault();
   console.log(e.type);
 }
-dragLeave = (e)=>{
+
+dragLeave = (e) => {
   e.preventDefault();
   console.log(e.type);
 }
-dragOver = (e)=>{
+
+dragOver = (e) => {
   e.preventDefault();
   console.log(e.type);
 }
-dragStart= (e)=>{
+
+dragStart= (e) => {
   console.log(e.type);
   e.preventDefault();
 }
-mouseEnter= (e)=>{
+
+mouseEnter= (e) => {
   console.log(e.type);
   e.preventDefault();
 }
-drop= (e)=>{
+
+drop= (e) => {
   console.log(e.type);
   e.preventDefault();
 }
+
 render() {
-
-    return (
-      <div
-      className='drag'
-      draggable = 'true'
-      onDrag = {this.drag}
-      onDragEnd = {this.dragEnd}
-      onDragEnter ={this.dragEnter}
+  return (
+    <div
+      className="drag"
+      draggable="true"
+      onDrag={this.drag}
+      onDragEnd={this.dragEnd}
+      onDragEnter={this.dragEnter}
       onDragExit={this.dragExit}
-      onDragLeave ={this.dragLeave}
-      onDragOver ={this.dragOver}
-      onDragStart = {this.dragStart}
-      onDrop = {this.drop}
-      onMouseEnter= {this.mouseEnter}
-      // onMouseDown = {this.onDown}
-      // onMouseUp = {this.onUp}
-      // onMouseLeave = {this.onUp}
-      // onMouseMove = {this.move}
-      //
-      // style={{
-      //   color: '#fff',
-      //   transform: 'translate('+this.state.x+'px, '+this.state.y+'px) rotate('+this.state.deg+'deg)',
-      //   transition:'transform 50ms',
-      // }}
-      >
-       <p>Movable comp 1</p>
+      onDragLeave={this.dragLeave}
+      onDragOver={this.dragOver}
+      onDragStart={this.dragStart}
+      onDrop={this.drop}
+      onMouseEnter={this.mouseEnter}
+    >
+      <p>Movable comp 1</p>
 
-      </div>
-    );
-  }
+    </div>
+  );
+}
 }
 
 export default Movable1;
