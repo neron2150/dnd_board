@@ -52,6 +52,7 @@ class DragArea extends Component {
         lx: e.clientX,
       });
     }
+    e.preventDefault();
   }
 
   transformElement = (element, x, y, deg) => {
