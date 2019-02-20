@@ -12,13 +12,6 @@ class DragArea extends Component {
     deg: 0,
   }
 
-  mouseDown = (e) => {
-    this.setState({
-      dragStart: true,
-      ly: e.clientY,
-      lx: e.clientX,
-    });
-  }
 
   stopDrag = () => {
     this.transformElement(this.state.draggable, { x: 0, y: 0, deg: 0 });
@@ -37,7 +30,15 @@ class DragArea extends Component {
     this.stopDrag();
   }
 
-  onDrag = () => {
+  mouseDown = (e) => {
+    this.setState({
+      dragStart: true,
+      ly: e.clientY,
+      lx: e.clientX,
+    });
+  }
+
+  onDrag = (e) => {
     const { lx, ly, deg } = this.state;
     const x = this.state.x + e.clientX - lx;
     const y = this.state.y + e.clientY - ly;
@@ -54,7 +55,7 @@ class DragArea extends Component {
 
   mouseMove = (e) => {
     if (this.state.dragStart && this.state.draggable) {
-      this.onDrag();
+      this.onDrag(e);
       e.preventDefault();
     } else {
       this.setState({
