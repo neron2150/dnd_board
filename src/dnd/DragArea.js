@@ -20,8 +20,8 @@ class DragArea extends Component {
     });
   }
 
-  mouseUp = () => {
-    this.transformElement(this.state.draggable, 0, 0, 0);
+  stopDrag = () => {
+    this.transformElement(this.state.draggable, { x: 0, y: 0, deg: 0 });
     this.setState({
       dragStart: false,
       draggable: null,
@@ -33,29 +33,38 @@ class DragArea extends Component {
     });
   }
 
+  mouseUp = () => {
+    this.stopDrag();
+  }
+
+  onDrag = () => {
+    const { lx, ly, deg } = this.state;
+    const x = this.state.x + e.clientX - lx;
+    const y = this.state.y + e.clientY - ly;
+    // deg = (e.clientX - lx) / 4;
+    this.transformElement(this.state.draggable, { x, y, deg });
+    this.setState({
+      x,
+      y,
+      deg: (e.clientX - lx) / 4,
+      lx: e.clientX,
+      ly: e.clientY,
+    });
+  }
+
   mouseMove = (e) => {
     if (this.state.dragStart && this.state.draggable) {
-      const { lx, ly, deg } = this.state;
-      const x = this.state.x + e.clientX - lx;
-      const y = this.state.y + e.clientY - ly;
-      this.transformElement(this.state.draggable, x, y, deg);
-      this.setState({
-        x,
-        y,
-        deg: (e.clientX - lx) / 4,
-        lx: e.clientX,
-        ly: e.clientY,
-      });
+      this.onDrag();
+      e.preventDefault();
     } else {
       this.setState({
         ly: e.clientY,
         lx: e.clientX,
       });
     }
-    e.preventDefault();
   }
 
-  transformElement = (element, x, y, deg) => {
+  transformElement = (element, { x, y, deg }) => {
     if (element) { element.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`; }
   }
 
