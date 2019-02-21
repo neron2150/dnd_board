@@ -1,28 +1,24 @@
 import React, { Component } from 'react';
 import { DndContext } from './DndContext';
 
-class DragArea extends Component {
-  state = {
+function getDefaulsState() {
+  return {
     dragStart: false,
     draggable: null,
     x: 0,
     y: 0,
-    lx: 0,
-    ly: 0,
+    lastX: 0,
+    lastY: 0,
     deg: 0,
   };
+}
+
+class DragArea extends Component {
+  state = getDefaulsState();
 
   stopDrag = () => {
     this.transformElement(this.state.draggable, { x: 0, y: 0, deg: 0 });
-    this.setState({
-      dragStart: false,
-      draggable: null,
-      x: 0,
-      y: 0,
-      lx: 0,
-      ly: 0,
-      deg: 0,
-    });
+    this.setState(getDefaulsState());
   };
 
   mouseUp = () => {
@@ -32,34 +28,34 @@ class DragArea extends Component {
   mouseDown = (e) => {
     this.setState({
       dragStart: true,
-      ly: e.clientY,
-      lx: e.clientX,
+      lastY: e.clientY,
+      lastX: e.clientX,
     });
   };
 
   onDrag = (e) => {
-    const { lx, ly, deg } = this.state;
-    const x = this.state.x + e.clientX - lx;
-    const y = this.state.y + e.clientY - ly;
-    // deg = (e.clientX - lx) / 4;
+    const { lastX, lastY, deg } = this.state;
+    const x = this.state.x + e.clientX - lastX;
+    const y = this.state.y + e.clientY - lastY;
+    const nextDeg = (e.clientX - lastX) / 4;
     this.transformElement(this.state.draggable, { x, y, deg });
     this.setState({
       x,
       y,
-      deg: (e.clientX - lx) / 4,
-      lx: e.clientX,
-      ly: e.clientY,
+      deg: nextDeg,
+      lastX: e.clientX,
+      lastY: e.clientY,
     });
   };
 
   mouseMove = (e) => {
-    if (this.state.dragStart && this.state.draggable) {
+    if (this.state.dragStart) {
       this.onDrag(e);
       e.preventDefault();
     } else {
       this.setState({
-        ly: e.clientY,
-        lx: e.clientX,
+        lastY: e.clientY,
+        lastX: e.clientX,
       });
     }
   };
@@ -70,7 +66,6 @@ class DragArea extends Component {
 
   setDraggable = (draggable) => {
     this.setState({ draggable });
-    console.log('setDraggable', draggable);
   };
 
   render() {
