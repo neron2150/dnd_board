@@ -10,8 +10,7 @@ class DragArea extends Component {
     lx: 0,
     ly: 0,
     deg: 0,
-  }
-
+  };
 
   stopDrag = () => {
     this.transformElement(this.state.draggable, { x: 0, y: 0, deg: 0 });
@@ -24,11 +23,11 @@ class DragArea extends Component {
       ly: 0,
       deg: 0,
     });
-  }
+  };
 
   mouseUp = () => {
     this.stopDrag();
-  }
+  };
 
   mouseDown = (e) => {
     this.setState({
@@ -36,7 +35,7 @@ class DragArea extends Component {
       ly: e.clientY,
       lx: e.clientX,
     });
-  }
+  };
 
   onDrag = (e) => {
     const { lx, ly, deg } = this.state;
@@ -51,7 +50,7 @@ class DragArea extends Component {
       lx: e.clientX,
       ly: e.clientY,
     });
-  }
+  };
 
   mouseMove = (e) => {
     if (this.state.dragStart && this.state.draggable) {
@@ -63,16 +62,16 @@ class DragArea extends Component {
         lx: e.clientX,
       });
     }
-  }
+  };
 
   transformElement = (element, { x, y, deg }) => {
     if (element) { element.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`; }
-  }
+  };
 
   setDraggable = (draggable) => {
     this.setState({ draggable });
     console.log('setDraggable', draggable);
-  }
+  };
 
   render() {
     return (
@@ -91,7 +90,6 @@ class DragArea extends Component {
           {this.props.children}
         </div>
       </DndContext.Provider>
-
 
     );
   }
