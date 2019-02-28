@@ -76,7 +76,7 @@ class DragArea extends Component {
         }}
       >
         <div
-          className="app"
+          className="area"
           onMouseDown={this.mouseDown}
           onMouseMove={this.mouseMove}
           onMouseUp={this.mouseUp}

@@ -8,6 +8,21 @@ class App extends Component {
   render() {
     return (
       <DragArea>
+
+        <DropableContainer>
+          <Draggable />
+          <Draggable />
+          <Draggable />
+          <Draggable />
+        </DropableContainer>
+
+        <DropableContainer>
+          <Draggable />
+          <Draggable />
+          <Draggable />
+          <Draggable />
+        </DropableContainer>
+
         <DropableContainer>
           <Draggable />
           <Draggable />

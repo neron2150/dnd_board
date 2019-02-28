@@ -7,14 +7,30 @@
   padding-top: 2px;
 
   border-color: #eeeeee;
-  border-radius: 10px;
+
   width:200px;
   height: 100px;
   border-style: solid;
   border-width: 2px;
+  border-radius: 10px;
 }
 
 .app{
   background-color: #777777;
   position: inherit;
+}
+.container{
+  background-color: #55bb44;
+  float: left;
+  padding: 5%;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 10px;
+  border-color: #eeeeee;
+}
+.area{
+  padding: 5%;
+  position: absolute;
+  background-color: #55bbbb;
+  width: 70%;
 }
