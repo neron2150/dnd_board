@@ -9,25 +9,25 @@ class App extends Component {
     return (
       <DragArea>
 
-        <DropableContainer>
-          <Draggable />
-          <Draggable />
-          <Draggable />
-          <Draggable />
+        <DropableContainer id={12}>
+          <Draggable id={0} />
+          <Draggable id={1} />
+          <Draggable id={2} />
+          <Draggable id={3} />
         </DropableContainer>
 
-        <DropableContainer>
-          <Draggable />
-          <Draggable />
-          <Draggable />
-          <Draggable />
+        <DropableContainer id={13}>
+          <Draggable id={4} />
+          <Draggable id={5} />
+          <Draggable id={6} />
+          <Draggable id={7} />
         </DropableContainer>
 
-        <DropableContainer>
-          <Draggable />
-          <Draggable />
-          <Draggable />
-          <Draggable />
+        <DropableContainer id={14}>
+          <Draggable id={8} />
+          <Draggable id={9} />
+          <Draggable id={10} />
+          <Draggable id={11} />
 
         </DropableContainer>
       </DragArea>

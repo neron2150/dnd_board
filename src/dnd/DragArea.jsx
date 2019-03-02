@@ -1,28 +1,35 @@
 import React, { Component } from 'react';
 import { DndContext } from './DndContext';
 
-function getDefaulsState() {
-  return {
+class DragArea extends Component {
+  state = {
     dragStart: false,
-    draggable: null,
     x: 0,
     y: 0,
     lastX: 0,
     lastY: 0,
     deg: 0,
+    draggableId: null,
+    dropableContainers: [],
   };
-}
 
-class DragArea extends Component {
-  state = getDefaulsState();
+  draggable = null;
 
   stopDrag = () => {
-    this.transformElement(this.state.draggable, { x: 0, y: 0, deg: 0 });
-    this.setState(getDefaulsState());
+    this.transformElement(this.draggable, { x: 0, y: 0, deg: 0 });
+    this.setState({
+      dragStart: false,
+      x: 0,
+      y: 0,
+      lastX: 0,
+      lastY: 0,
+      deg: 0,
+      draggableId: null,
+    });
   };
 
   mouseUp = () => {
-    this.stopDrag();
+    if (this.state.dragStart) this.stopDrag();
   };
 
   mouseDown = (e) => {
@@ -38,7 +45,7 @@ class DragArea extends Component {
     const x = this.state.x + e.clientX - lastX;
     const y = this.state.y + e.clientY - lastY;
     const nextDeg = (e.clientX - lastX) / 4;
-    this.transformElement(this.state.draggable, { x, y, deg });
+    this.transformElement(this.draggable, { x, y, deg });
     this.setState({
       x,
       y,
@@ -61,11 +68,16 @@ class DragArea extends Component {
   };
 
   transformElement = (element, { x, y, deg }) => {
-    if (element) { element.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`; }
+    if (element) element.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`;
   };
 
-  setDraggable = (draggable) => {
-    this.setState({ draggable });
+  setDraggable = (draggable, draggableId) => {
+    this.setState({ draggableId });
+    this.draggable = draggable;
+  };
+
+  setDropable = (dropable, id) => {
+    this.setState(prevState => ({ dropableContainers: prevState.dropableContainers.concat([{ dropable, id }]) }));
   };
 
   render() {
@@ -73,9 +85,10 @@ class DragArea extends Component {
       <DndContext.Provider
         value={{
           setDraggable: this.setDraggable,
+          setDropable: this.setDropable,
         }}
       >
-        <div
+        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
           className="area"
           onMouseDown={this.mouseDown}
           onMouseMove={this.mouseMove}

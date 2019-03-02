@@ -5,9 +5,10 @@
   cursor: move;
   padding: 10px;
   padding-top: 2px;
-
+  color: white;
+  font-size: 20px;
   border-color: #eeeeee;
-
+  text-align: center;
   width:200px;
   height: 100px;
   border-style: solid;
