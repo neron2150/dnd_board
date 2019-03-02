@@ -28,13 +28,18 @@ const TASKS_BY_SECTIONS = SECTIONS.reduce(
 
     return acc;
   },
+
   Object.create(null),
 );
 
 class App extends Component {
+  onDrop = (draggableId, dropableId) => {
+    console.log(draggableId, 'droped in', dropableId);
+  };
+
   render() {
     return (
-      <DragArea>
+      <DragArea onDrop={this.onDrop}>
         {SECTIONS.map(
           sectionID => (
             <DropableContainer

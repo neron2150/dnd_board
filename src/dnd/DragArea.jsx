@@ -15,7 +15,24 @@ class DragArea extends Component {
 
   draggable = null;
 
-  stopDrag = () => {
+  setDraggable = (draggable, draggableId) => {
+    this.setState({ draggableId });
+    this.draggable = draggable;
+  };
+
+  setDropable = (dropable, id) => {
+    this.setState(prevState => ({
+      dropableContainers:
+      prevState.dropableContainers.concat([{ dropable, id }]),
+    }));
+  };
+
+  transformElement = (element, { x, y, deg }) => {
+    if (element) element.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`;
+  };
+
+  stopDrag = (e) => {
+    this.matchDndIntersections(e.pageX, e.pageY);
     this.transformElement(this.draggable, { x: 0, y: 0, deg: 0 });
     this.setState({
       dragStart: false,
@@ -28,8 +45,8 @@ class DragArea extends Component {
     });
   };
 
-  mouseUp = () => {
-    if (this.state.dragStart) this.stopDrag();
+  mouseUp = (e) => {
+    if (this.state.dragStart) this.stopDrag(e);
   };
 
   mouseDown = (e) => {
@@ -55,6 +72,10 @@ class DragArea extends Component {
     });
   };
 
+  onDrop = (draggableId, dropableId) => {
+    this.props.onDrop(draggableId, dropableId);
+  };
+
   mouseMove = (e) => {
     if (this.state.dragStart) {
       this.onDrag(e);
@@ -67,18 +88,19 @@ class DragArea extends Component {
     }
   };
 
-  transformElement = (element, { x, y, deg }) => {
-    if (element) element.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`;
-  };
-
-  setDraggable = (draggable, draggableId) => {
-    this.setState({ draggableId });
-    this.draggable = draggable;
-  };
-
-  setDropable = (dropable, id) => {
-    this.setState(prevState => ({ dropableContainers: prevState.dropableContainers.concat([{ dropable, id }]) }));
-  };
+  matchDndIntersections(x, y) {
+    this.state.dropableContainers.forEach(
+      (container) => {
+        if (x > container.dropable.offsetLeft &&
+           x < container.dropable.offsetWidth + container.dropable.offsetLeft &&
+           y > container.dropable.offsetTop &&
+           y < container.dropable.offsetHeight + container.dropable.offsetTop
+        ) {
+          this.onDrop(this.state.draggableId, container.id);
+        }
+      },
+    );
+  }
 
   render() {
     return (
