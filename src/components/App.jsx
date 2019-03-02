@@ -4,32 +4,54 @@ import DropableContainer from '../dnd/DropableContainer';
 import DragArea from '../dnd/DragArea';
 import Draggable from '../dnd/Draggable';
 
+const getRandomTasksIDs = (count) => {
+  const tasks = [];
+
+  for (let i = 0; i <= count; i++) { // eslint-disable-line
+    tasks.push(Math.random().toString(36).substring(7));
+  }
+
+  return tasks;
+};
+
+const SECTIONS = ['todo', 'doing', 'done'];
+
+const TASKS_BY_SECTIONS = SECTIONS.reduce(
+  (acc, sectionID) => {
+    acc[sectionID] = getRandomTasksIDs(5).map(
+      taskID => ({
+        ID: taskID,
+        sectionID,
+        status: sectionID,
+      }),
+    );
+
+    return acc;
+  },
+  Object.create(null),
+);
+
 class App extends Component {
   render() {
     return (
       <DragArea>
-
-        <DropableContainer id={12}>
-          <Draggable id={0} />
-          <Draggable id={1} />
-          <Draggable id={2} />
-          <Draggable id={3} />
-        </DropableContainer>
-
-        <DropableContainer id={13}>
-          <Draggable id={4} />
-          <Draggable id={5} />
-          <Draggable id={6} />
-          <Draggable id={7} />
-        </DropableContainer>
-
-        <DropableContainer id={14}>
-          <Draggable id={8} />
-          <Draggable id={9} />
-          <Draggable id={10} />
-          <Draggable id={11} />
-
-        </DropableContainer>
+        {SECTIONS.map(
+          sectionID => (
+            <DropableContainer
+              key={sectionID}
+              id={sectionID}
+            >
+              {TASKS_BY_SECTIONS[sectionID].map(
+                task => (
+                  <Draggable
+                    key={task.ID}
+                    id={task.ID}
+                  />
+                ),
+              )}
+            </DropableContainer>
+          ),
+        )}
       </DragArea>
     );
   }

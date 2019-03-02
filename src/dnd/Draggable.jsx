@@ -2,37 +2,32 @@ import React, { Component } from 'react';
 import { DndContext } from './DndContext';
 
 class Draggable extends Component {
-  mouseDown = () => {
-    this.context.setDraggable(this.container, this.props.id);
+  draggable = null;
+
+  mouseDown = setDraggable => () => {
+    if (this.draggable) {
+      setDraggable(this.draggable, this.props.id);
+    }
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log('this.props.children === nextProps.children');
-    if (nextProps.id !== 1) {
-      console.log(this.props.children === nextProps.children);
-      console.log('asdasda');
-    }
-
-    console.log('this.props.children === nextProps.children');
-
-    return true;
-  }
+  setRef = (el) => { this.draggable = el; };
 
   render() {
-    // console.log('render   ', this.props.id);
     return (
-
-      <div
-        className="drag"
-        onMouseDown={this.mouseDown}
-        ref={(el) => { this.container = el; }}
-      >
-        <p>{this.props.id}</p>
-        {this.props.children}
-      </div>
-
+      <DndContext.Consumer>
+        {context => (
+          <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+            className="drag"
+            onMouseDown={this.mouseDown(context.setDraggable)}
+            ref={this.setRef}
+          >
+            <p>{this.props.id}</p>
+            {this.props.children}
+          </div>
+        )}
+      </DndContext.Consumer>
     );
   }
 }
-Draggable.contextType = DndContext;
+
 export default Draggable;
