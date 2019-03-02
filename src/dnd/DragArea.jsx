@@ -10,6 +10,7 @@ class DragArea extends Component {
     lastY: 0,
     deg: 0,
     draggableId: null,
+    dropableId: null,
     dropableContainers: [],
   };
 
@@ -32,7 +33,12 @@ class DragArea extends Component {
   };
 
   stopDrag = (e) => {
-    this.matchDndIntersections(e.pageX, e.pageY);
+    const newDropable = this.findCurrentContainer(e.pageX, e.pageY);
+    const lastDropable = this.state.dropableId;
+    if (newDropable && newDropable !== lastDropable) {
+      this.onDrop(this.state.draggableId, newDropable);
+    }
+
     this.transformElement(this.draggable, { x: 0, y: 0, deg: 0 });
     this.setState({
       dragStart: false,
@@ -41,6 +47,7 @@ class DragArea extends Component {
       lastX: 0,
       lastY: 0,
       deg: 0,
+      dropableId: null,
       draggableId: null,
     });
   };
@@ -54,6 +61,7 @@ class DragArea extends Component {
       dragStart: true,
       lastY: e.clientY,
       lastX: e.clientX,
+      dropableId: this.findCurrentContainer(e.pageX, e.pageY),
     });
   };
 
@@ -88,18 +96,16 @@ class DragArea extends Component {
     }
   };
 
-  matchDndIntersections(x, y) {
-    this.state.dropableContainers.forEach(
-      (container) => {
-        if (x > container.dropable.offsetLeft &&
-           x < container.dropable.offsetWidth + container.dropable.offsetLeft &&
-           y > container.dropable.offsetTop &&
-           y < container.dropable.offsetHeight + container.dropable.offsetTop
-        ) {
-          this.onDrop(this.state.draggableId, container.id);
-        }
-      },
+  findCurrentContainer(x, y) {
+    const currentContainer = this.state.dropableContainers.find(
+      container => (
+        x > container.dropable.offsetLeft &&
+        x < container.dropable.offsetWidth + container.dropable.offsetLeft &&
+        y > container.dropable.offsetTop &&
+        y < container.dropable.offsetHeight + container.dropable.offsetTop),
+
     );
+    return currentContainer ? currentContainer.id : false;
   }
 
   render() {

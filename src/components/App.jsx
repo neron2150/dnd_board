@@ -34,7 +34,7 @@ const TASKS_BY_SECTIONS = SECTIONS.reduce(
 
 class App extends Component {
   onDrop = (draggableId, dropableId) => {
-    console.log(draggableId, 'droped in', dropableId);
+    console.log(draggableId, 'dropped in', dropableId);
   };
 
   render() {
