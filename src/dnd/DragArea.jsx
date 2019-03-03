@@ -28,8 +28,11 @@ class DragArea extends Component {
     }));
   };
 
-  transformElement = (element, { x, y, deg }) => {
-    if (element) element.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`;
+  transformElement = ({ x, y, deg }) => {
+    if (this.draggable) {
+      this.draggable.style.transform =
+     `translate(${x}px, ${y}px) rotate(${deg}deg)`;
+    }
   };
 
   stopDrag = (e) => {
@@ -39,7 +42,7 @@ class DragArea extends Component {
       this.onDrop(this.state.draggableId, newDropable);
     }
 
-    this.transformElement(this.draggable, { x: 0, y: 0, deg: 0 });
+    this.transformElement({ x: 0, y: 0, deg: 0 });
     this.setState({
       dragStart: false,
       x: 0,
@@ -69,15 +72,15 @@ class DragArea extends Component {
     const { lastX, lastY, deg } = this.state;
     const x = this.state.x + e.clientX - lastX;
     const y = this.state.y + e.clientY - lastY;
-    const nextDeg = (e.clientX - lastX) / 4;
-    this.transformElement(this.draggable, { x, y, deg });
-    this.setState({
-      x,
-      y,
-      deg: nextDeg,
+
+    this.transformElement({ x, y, deg });
+    this.setState(prevState => ({
+      x: prevState.x + e.clientX - prevState.lastX,
+      y: prevState.y + e.clientY - prevState.lastY,
+      deg: (e.clientX - prevState.lastX) / 4,
       lastX: e.clientX,
       lastY: e.clientY,
-    });
+    }));
   };
 
   onDrop = (draggableId, dropableId) => {

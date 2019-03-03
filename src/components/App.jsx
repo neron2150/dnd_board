@@ -7,7 +7,7 @@ import Draggable from '../dnd/Draggable';
 const getRandomTasksIDs = (count) => {
   const tasks = [];
 
-  for (let i = 0; i <= count; i++) { // eslint-disable-line
+  for (let i = 0; i <= count; i++) {
     tasks.push(Math.random().toString(36).substring(7));
   }
 
@@ -33,9 +33,7 @@ const TASKS_BY_SECTIONS = SECTIONS.reduce(
 );
 
 class App extends Component {
-  onDrop = (draggableId, dropableId) => {
-    console.log(draggableId, 'droped in', dropableId);
-  };
+  onDrop = (draggableId, dropableId) => ({ draggableId, dropableId });
 
   render() {
     return (
