@@ -1,0 +1,6 @@
+**/*.min.*
+**/webpack/*
+**/node_modules/*
+config
+scripts
+src/serviceWorker.js
