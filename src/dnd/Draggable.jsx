@@ -2,25 +2,32 @@ import React, { Component } from 'react';
 import { DndContext } from './DndContext';
 
 class Draggable extends Component {
+  draggable = null;
+
   mouseDown = setDraggable => () => {
-    setDraggable(this.container);
+    if (this.draggable) {
+      setDraggable(this.draggable, this.props.id);
+    }
   };
+
+  setRef = (el) => { this.draggable = el; };
 
   render() {
     return (
       <DndContext.Consumer>
-        {value => (
-          <div
+        {context => (
+          <div // eslint-disable-line jsx-a11y/no-static-element-interactions
             className="drag"
-            onMouseDown={this.mouseDown(value.setDraggable)}
-            ref={(el) => { this.container = el; }}
+            onMouseDown={this.mouseDown(context.setDraggable)}
+            ref={this.setRef}
           >
+            <p>{this.props.id}</p>
             {this.props.children}
           </div>
         )}
       </DndContext.Consumer>
-
     );
   }
 }
+
 export default Draggable;
