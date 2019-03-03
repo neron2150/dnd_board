@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import DropableContainer from '../dnd/DropableContainer';
+import DroppableContainer from '../dnd/DroppableContainer';
 import DragArea from '../dnd/DragArea';
 import Draggable from '../dnd/Draggable';
 
@@ -33,14 +33,14 @@ const TASKS_BY_SECTIONS = SECTIONS.reduce(
 );
 
 class App extends Component {
-  onDrop = (draggableId, dropableId) => ({ draggableId, dropableId });
+  onDrop = (draggableId, droppableId) => ({ draggableId, droppableId });
 
   render() {
     return (
       <DragArea onDrop={this.onDrop}>
         {SECTIONS.map(
           sectionID => (
-            <DropableContainer
+            <DroppableContainer
               key={sectionID}
               id={sectionID}
             >
@@ -52,7 +52,7 @@ class App extends Component {
                   />
                 ),
               )}
-            </DropableContainer>
+            </DroppableContainer>
           ),
         )}
       </DragArea>

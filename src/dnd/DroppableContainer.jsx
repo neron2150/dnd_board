@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { DndContext } from './DndContext';
 
-class DropableContainer extends Component {
+class DroppableContainer extends Component {
+  static contextType = DndContext;
+
   componentDidMount() {
-    this.context.setDropable(this.container, this.props.id);
+    this.context.setDroppable(this.container, this.props.id);
   }
 
   render() {
@@ -21,6 +23,4 @@ class DropableContainer extends Component {
   }
 }
 
-DropableContainer.contextType = DndContext;
-
-export default DropableContainer;
+export default DroppableContainer;

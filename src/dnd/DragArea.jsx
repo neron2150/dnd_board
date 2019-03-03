@@ -10,8 +10,8 @@ class DragArea extends Component {
     lastY: 0,
     deg: 0,
     draggableId: null,
-    dropableId: null,
-    dropableContainers: [],
+    droppableId: null,
+    droppableContainers: [],
   };
 
   draggable = null;
@@ -21,14 +21,14 @@ class DragArea extends Component {
     this.draggable = draggable;
   };
 
-  setDropable = (dropable, id) => {
+  setDroppable = (droppable, id) => {
     this.setState(prevState => ({
-      dropableContainers:
-      prevState.dropableContainers.concat([{ dropable, id }]),
+      droppableContainers:
+      prevState.droppableContainers.concat([{ droppable, id }]),
     }));
   };
 
-  transformElement = ({ x, y, deg }) => {
+  transformDraggable = ({ x, y, deg }) => {
     if (this.draggable) {
       this.draggable.style.transform =
      `translate(${x}px, ${y}px) rotate(${deg}deg)`;
@@ -36,13 +36,13 @@ class DragArea extends Component {
   };
 
   stopDrag = (e) => {
-    const newDropable = this.findCurrentContainer(e.pageX, e.pageY);
-    const lastDropable = this.state.dropableId;
-    if (newDropable && newDropable !== lastDropable) {
-      this.onDrop(this.state.draggableId, newDropable);
+    const newDroppable = this.findCurrentContainerID(e.pageX, e.pageY);
+    const lastDroppable = this.state.droppableId;
+    if (newDroppable && newDroppable !== lastDroppable) {
+      this.onDrop(this.state.draggableId, newDroppable);
     }
 
-    this.transformElement({ x: 0, y: 0, deg: 0 });
+    this.transformDraggable({ x: 0, y: 0, deg: 0 });
     this.setState({
       dragStart: false,
       x: 0,
@@ -50,7 +50,7 @@ class DragArea extends Component {
       lastX: 0,
       lastY: 0,
       deg: 0,
-      dropableId: null,
+      droppableId: null,
       draggableId: null,
     });
   };
@@ -64,7 +64,7 @@ class DragArea extends Component {
       dragStart: true,
       lastY: e.clientY,
       lastX: e.clientX,
-      dropableId: this.findCurrentContainer(e.pageX, e.pageY),
+      droppableId: this.findCurrentContainerID(e.pageX, e.pageY),
     });
   };
 
@@ -72,8 +72,7 @@ class DragArea extends Component {
     const { lastX, lastY, deg } = this.state;
     const x = this.state.x + e.clientX - lastX;
     const y = this.state.y + e.clientY - lastY;
-
-    this.transformElement({ x, y, deg });
+    this.transformDraggable({ x, y, deg });
     this.setState(prevState => ({
       x: prevState.x + e.clientX - prevState.lastX,
       y: prevState.y + e.clientY - prevState.lastY,
@@ -83,14 +82,15 @@ class DragArea extends Component {
     }));
   };
 
-  onDrop = (draggableId, dropableId) => {
-    this.props.onDrop(draggableId, dropableId);
+  onDrop = (draggableId, droppableId) => {
+    this.props.onDrop(draggableId, droppableId);
   };
 
   mouseMove = (e) => {
     if (this.state.dragStart) {
-      this.onDrag(e);
+      e.persist();
       e.preventDefault();
+      this.onDrag(e);
     } else {
       this.setState({
         lastY: e.clientY,
@@ -99,24 +99,25 @@ class DragArea extends Component {
     }
   };
 
-  findCurrentContainer(x, y) {
-    const currentContainer = this.state.dropableContainers.find(
-      container => (
-        x > container.dropable.offsetLeft &&
-        x < container.dropable.offsetWidth + container.dropable.offsetLeft &&
-        y > container.dropable.offsetTop &&
-        y < container.dropable.offsetHeight + container.dropable.offsetTop),
-
-    );
-    return currentContainer ? currentContainer.id : false;
-  }
+  findCurrentContainerID = (x, y) => {
+    const currentContainer = this.state.droppableContainers.find(
+      (container) => {
+        if (!container.droppable) return false;
+        const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = container.droppable;
+        return x > offsetLeft &&
+          x < offsetWidth + offsetLeft &&
+          y > offsetTop &&
+          y < offsetHeight + offsetTop;
+      });
+    return currentContainer ? currentContainer.id : null;
+  };
 
   render() {
     return (
       <DndContext.Provider
         value={{
           setDraggable: this.setDraggable,
-          setDropable: this.setDropable,
+          setDroppable: this.setDroppable,
         }}
       >
         <div // eslint-disable-line jsx-a11y/no-static-element-interactions
