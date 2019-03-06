@@ -43,6 +43,7 @@ class DragArea extends Component {
     }
 
     this.transformDraggable({ x: 0, y: 0, deg: 0 });
+    this.draggable = null;
     this.setState({
       dragStart: false,
       x: 0,
