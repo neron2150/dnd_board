@@ -6,7 +6,7 @@ class Draggable extends Component {
 
   mouseDown = setDraggable => () => {
     if (this.draggable) {
-      setDraggable(this.draggable, this.props.id);
+      setDraggable(this.draggable, this.props.ID);
     }
   };
 
@@ -21,7 +21,7 @@ class Draggable extends Component {
             onMouseDown={this.mouseDown(context.setDraggable)}
             ref={this.setRef}
           >
-            <p>{this.props.id}</p>
+            <p>{this.props.ID}</p>
             {this.props.children}
           </div>
         )}

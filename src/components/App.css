@@ -17,8 +17,13 @@
   margin: 4px;
 }
 
+.test{
+  background-color: #009900;
+  padding: 5%;
+}
+
 .app{
-  
+
 }
 .container{
   color: #ef5fda;
@@ -33,6 +38,7 @@
   border-color: #999999;
 }
 .area{
+  color: #ef5fda;
   padding: 5%;
   position: absolute;
   background-color: #222222;

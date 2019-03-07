@@ -5,7 +5,7 @@ class DroppableContainer extends Component {
   static contextType = DndContext;
 
   componentDidMount() {
-    this.context.setDroppable(this.container, this.props.id);
+    this.props.setDroppable(this.container, this.props.ID);
   }
 
   render() {
@@ -16,7 +16,7 @@ class DroppableContainer extends Component {
           this.container = el;
         }}
       >
-        <p>{this.props.id}</p>
+        <p>{this.props.ID}</p>
         {this.props.children}
       </div>
     );
