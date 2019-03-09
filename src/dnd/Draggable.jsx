@@ -17,11 +17,9 @@ class Draggable extends Component {
       <DndContext.Consumer>
         {context => (
           <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-            className="drag"
             onMouseDown={this.mouseDown(context.setDraggable)}
             ref={this.setRef}
           >
-            <p>{this.props.ID}</p>
             {this.props.children}
           </div>
         )}

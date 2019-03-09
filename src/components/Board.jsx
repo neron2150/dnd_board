@@ -26,12 +26,18 @@ const createContent = () => {
 class Board extends Component {
   onDrop = (draggableId, droppableId) => console.log(draggableId, droppableId);
 
-  renderDraggableByID = () => {
+  renderDraggableByID = ID => (
+    <div className="drag">
+      {ID}
+    </div>
+  );
 
-  };
-
-  renderDroppableByID = content =>
-    (<div className="test">{content}</div>);
+  renderDroppableByID = (content, containerInfo) => (
+    <div className="container">
+      <p>{containerInfo.containerID}</p>
+      {content}
+    </div>
+  );
 
   render() {
     return (

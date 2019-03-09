@@ -11,12 +11,11 @@ class DroppableContainer extends Component {
   render() {
     return (
       <div
-        className="container"
         ref={(el) => {
           this.container = el;
         }}
       >
-        <p>{this.props.ID}</p>
+
         {this.props.children}
       </div>
     );

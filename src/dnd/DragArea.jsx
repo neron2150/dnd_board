@@ -120,7 +120,9 @@ class DragArea extends Component {
 
   renderDraggable = ID => (
     <div>
-      {<Draggable ID={ID} />}
+      {<Draggable ID={ID}>
+        {this.props.renderDraggableByID(ID)}
+       </Draggable>}
     </div>
   );
 
@@ -129,10 +131,11 @@ class DragArea extends Component {
       ID={container.containerID}
       setDroppable={this.setDroppable}
     >
-      {this.props.renderDroppableByID(
+      {
+      this.props.renderDroppableByID(
         container.draggables.map(draggable =>
           this.renderDraggable(draggable.ID),
-        ))}
+        ), container)}
     </DroppableContainer>
   );
 
