@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import DroppableContainer from '../dnd/DroppableContainer';
 import DragArea from '../dnd/DragArea';
-import Draggable from '../dnd/Draggable';
 
 const CREATE_TASKS = (count, containerID) => {
   const tasks = [];
@@ -24,8 +22,6 @@ const createContent = () => {
 };
 
 class Board extends Component {
-  onDrop = (draggableId, droppableId) => console.log(draggableId, droppableId);
-
   renderDraggableByID = ID => (
     <div className="drag">
       {ID}

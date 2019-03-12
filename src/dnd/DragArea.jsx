@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { DndContext } from './DndContext';
 import DroppableContainer from './DroppableContainer';
 import Draggable from './Draggable';
 
@@ -8,7 +7,6 @@ class DragArea extends Component {
     dragStart: false,
     x: 0,
     y: 0,
-    z: 0,
     lastX: 0,
     lastY: 0,
     deg: 0,
@@ -21,7 +19,7 @@ class DragArea extends Component {
 
   setDraggable = (draggable, draggableId) => {
     // TODO: resolve the problem with finding z-index
-    this.setState({ draggableId, z: '100' });
+    this.setState({ draggableId });
     this.draggable = draggable;
   };
 
@@ -32,9 +30,8 @@ class DragArea extends Component {
     }));
   };
 
-  transformDraggable = ({ x, y, z, deg }) => {
+  transformDraggable = ({ x, y, deg }) => {
     if (this.draggable) {
-      this.draggable.style.zIndex = `${z}`;
       this.draggable.style.transform =
       `translate(${x}px, ${y}px) rotate(${deg}deg)`;
     }
@@ -47,7 +44,7 @@ class DragArea extends Component {
       this.onDrop(this.state.draggableId, newDroppable);
     }
 
-    this.transformDraggable({ x: 0, y: 0, z: this.state.z, deg: 0 });
+    this.transformDraggable({ x: 0, y: 0, deg: 0 });
     this.draggable = null;
     this.setState({
       dragStart: false,
@@ -78,7 +75,7 @@ class DragArea extends Component {
     const { lastX, lastY, deg } = this.state;
     const x = this.state.x + e.clientX - lastX;
     const y = this.state.y + e.clientY - lastY;
-    this.transformDraggable({ x, y, z: '999', deg });
+    this.transformDraggable({ x, y, deg });
     this.setState(prevState => ({
       x: prevState.x + e.clientX - prevState.lastX,
       y: prevState.y + e.clientY - prevState.lastY,
@@ -119,15 +116,20 @@ class DragArea extends Component {
   };
 
   renderDraggable = ID => (
-    <div>
-      {<Draggable ID={ID}>
-        {this.props.renderDraggableByID(ID)}
-       </Draggable>}
-    </div>
+
+    <Draggable
+      key={ID}
+      ID={ID}
+      setDraggable={this.setDraggable}
+    >
+      {this.props.renderDraggableByID(ID)}
+    </Draggable>
+
   );
 
   renderDroppableContainer = container => (
     <DroppableContainer
+      key={container.containerID}
       ID={container.containerID}
       setDroppable={this.setDroppable}
     >
@@ -145,24 +147,15 @@ class DragArea extends Component {
 
   render() {
     return (
-      <DndContext.Provider
-        value={{
-          setDraggable: this.setDraggable,
-          setDroppable: this.setDroppable,
-        }}
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+        className="area"
+        onMouseDown={this.mouseDown}
+        onMouseMove={this.mouseMove}
+        onMouseUp={this.mouseUp}
+        onMouseLeave={this.mouseUp}
       >
-        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-          className="area"
-          onMouseDown={this.mouseDown}
-          onMouseMove={this.mouseMove}
-          onMouseUp={this.mouseUp}
-          onMouseLeave={this.mouseUp}
-        >
-
-
-          {this.renderContent()}
-        </div>
-      </DndContext.Provider>
+        {this.renderContent()}
+      </div>
 
     );
   }

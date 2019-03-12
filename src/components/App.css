@@ -1,6 +1,5 @@
 
 .drag{
-  transition: transform 50ms linear;
   background-color: #722f68;
   cursor: move;
   padding: 10px;
@@ -15,6 +14,9 @@
   border-width: 2px;
   border-radius: 10px;
   margin: 4px;
+}
+.draggable{
+  transition: transform 50ms linear;
 }
 
 .test{

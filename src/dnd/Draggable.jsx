@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { DndContext } from './DndContext';
 
 class Draggable extends Component {
   draggable = null;
@@ -14,16 +13,15 @@ class Draggable extends Component {
 
   render() {
     return (
-      <DndContext.Consumer>
-        {context => (
-          <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-            onMouseDown={this.mouseDown(context.setDraggable)}
-            ref={this.setRef}
-          >
-            {this.props.children}
-          </div>
-        )}
-      </DndContext.Consumer>
+
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+        className="draggable"
+        onMouseDown={this.mouseDown(this.props.setDraggable)}
+        ref={this.setRef}
+      >
+        {this.props.children}
+      </div>
+
     );
   }
 }
