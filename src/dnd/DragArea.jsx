@@ -12,7 +12,6 @@ class DragArea extends Component {
     deg: 0,
     draggableId: null,
     lastDroppableId: null,
-    droppableId: null,
     droppableContainers: [],
   };
 
@@ -55,7 +54,6 @@ class DragArea extends Component {
       lastY: 0,
       deg: 0,
       lastDroppableId: null,
-      droppableId: null,
       draggableId: null,
     });
   };
