@@ -18,7 +18,9 @@
 .draggable{
   transition: transform 50ms linear;
 }
-
+.droppable{
+  width: auto;
+}
 .test{
   background-color: #009900;
   padding: 5%;

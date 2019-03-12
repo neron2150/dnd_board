@@ -13,6 +13,7 @@ class DragArea extends Component {
     draggableId: null,
     lastDroppableId: null,
     droppableContainers: [],
+    containers: this.props.containers,
   };
 
   draggable = null;
@@ -87,6 +88,7 @@ class DragArea extends Component {
 
   onDrop = (draggableId, newDroppableId, lastDroppableId) => {
     this.props.onDrop(draggableId, newDroppableId, lastDroppableId);
+    this.rebaseDraggable(draggableId, newDroppableId, lastDroppableId);
   };
 
   mouseMove = (e) => {
@@ -112,7 +114,6 @@ class DragArea extends Component {
           y > offsetTop &&
           y < offsetHeight + offsetTop;
       });
-
     return currentContainer ? currentContainer.id : null;
   };
 
@@ -129,15 +130,16 @@ class DragArea extends Component {
   );
 
   renderDroppableContainer = (container) => {
+    const draggables = [];
+    for (const ID in container.draggables) draggables.push(this.renderDraggable(ID));
+
     const CONTAINER = (
       <DroppableContainer
-        key={container.containerID}
-        ID={container.containerID}
+        key={container.ID}
+        ID={container.ID}
         setDroppable={this.setDroppable}
       >
-        {container.draggables.map(draggable =>
-          this.renderDraggable(draggable.ID),
-        )}
+        {draggables}
       </DroppableContainer>
     );
 
@@ -145,12 +147,17 @@ class DragArea extends Component {
       CONTAINER, container);
   };
 
-  renderContent = () => this.props.containers.map(container => (
+  renderContent = () => Object.values(this.state.containers).map(container => (
     this.renderDroppableContainer(container)
   ));
 
-  rebaseDraggable = () => {
-
+  rebaseDraggable = (draggableID, newDroppableID, lastDroppableID) => {
+    const containers = Object.assign({}, this.state.containers);
+    containers[newDroppableID].draggables[draggableID] =
+     containers[lastDroppableID].draggables[draggableID];
+    containers[newDroppableID].draggables[draggableID].containerID = newDroppableID;
+    delete containers[lastDroppableID].draggables[draggableID];
+    this.setState({ containers });
   };
 
   render() {

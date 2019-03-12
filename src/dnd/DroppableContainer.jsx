@@ -8,6 +8,7 @@ class DroppableContainer extends Component {
   render() {
     return (
       <div
+        className="droppable"
         ref={(el) => {
           this.container = el;
         }}
