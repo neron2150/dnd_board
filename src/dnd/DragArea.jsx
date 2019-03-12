@@ -41,6 +41,7 @@ class DragArea extends Component {
   stopDrag = (e) => {
     const newDroppable = this.findCurrentContainerID(e.pageX, e.pageY);
     const lastDroppable = this.state.lastDroppableId;
+    console.log(`${newDroppable} && ${newDroppable} !== ${lastDroppable}`);
     if (newDroppable && newDroppable !== lastDroppable) {
       this.onDrop(this.state.draggableId, newDroppable, lastDroppable);
     }
@@ -64,12 +65,14 @@ class DragArea extends Component {
   };
 
   mouseDown = (e) => {
-    this.setState({
-      dragStart: true,
-      lastY: e.clientY,
-      lastX: e.clientX,
-      lastDroppableId: this.findCurrentContainerID(e.pageX, e.pageY),
-    });
+    if (this.draggable) {
+      this.setState({
+        dragStart: true,
+        lastY: e.clientY,
+        lastX: e.clientX,
+        lastDroppableId: this.findCurrentContainerID(e.pageX, e.pageY),
+      });
+    }
   };
 
   onDrag = (e) => {
