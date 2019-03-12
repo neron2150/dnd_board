@@ -35,6 +35,10 @@ class Board extends Component {
     </div>
   );
 
+  onDrop = (draggableID, newContainerID, lastContainerID) => {
+    console.log(draggableID, newContainerID, lastContainerID);
+  };
+
   render() {
     return (
       <DragArea
@@ -42,6 +46,7 @@ class Board extends Component {
         containers={createContent()}
         renderDroppableByID={this.renderDroppableByID}
         renderDraggableByID={this.renderDraggableByID}
+        shouldRebase
       />
     );
   }

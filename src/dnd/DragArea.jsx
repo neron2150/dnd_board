@@ -11,6 +11,7 @@ class DragArea extends Component {
     lastY: 0,
     deg: 0,
     draggableId: null,
+    lastDroppableId: null,
     droppableId: null,
     droppableContainers: [],
   };
@@ -39,9 +40,9 @@ class DragArea extends Component {
 
   stopDrag = (e) => {
     const newDroppable = this.findCurrentContainerID(e.pageX, e.pageY);
-    const lastDroppable = this.state.droppableId;
+    const lastDroppable = this.state.lastDroppableId;
     if (newDroppable && newDroppable !== lastDroppable) {
-      this.onDrop(this.state.draggableId, newDroppable);
+      this.onDrop(this.state.draggableId, newDroppable, lastDroppable);
     }
 
     this.transformDraggable({ x: 0, y: 0, deg: 0 });
@@ -53,6 +54,7 @@ class DragArea extends Component {
       lastX: 0,
       lastY: 0,
       deg: 0,
+      lastDroppableId: null,
       droppableId: null,
       draggableId: null,
     });
@@ -67,7 +69,7 @@ class DragArea extends Component {
       dragStart: true,
       lastY: e.clientY,
       lastX: e.clientX,
-      droppableId: this.findCurrentContainerID(e.pageX, e.pageY),
+      lastDroppableId: this.findCurrentContainerID(e.pageX, e.pageY),
     });
   };
 
@@ -85,8 +87,8 @@ class DragArea extends Component {
     }));
   };
 
-  onDrop = (draggableId, droppableId) => {
-    this.props.onDrop(draggableId, droppableId);
+  onDrop = (draggableId, newDroppableId, lastDroppableId) => {
+    this.props.onDrop(draggableId, newDroppableId, lastDroppableId);
   };
 
   mouseMove = (e) => {
@@ -112,6 +114,7 @@ class DragArea extends Component {
           y > offsetTop &&
           y < offsetHeight + offsetTop;
       });
+
     return currentContainer ? currentContainer.id : null;
   };
 
@@ -127,23 +130,30 @@ class DragArea extends Component {
 
   );
 
-  renderDroppableContainer = container => (
-    <DroppableContainer
-      key={container.containerID}
-      ID={container.containerID}
-      setDroppable={this.setDroppable}
-    >
-      {
-      this.props.renderDroppableByID(
-        container.draggables.map(draggable =>
+  renderDroppableContainer = (container) => {
+    const CONTAINER = (
+      <DroppableContainer
+        key={container.containerID}
+        ID={container.containerID}
+        setDroppable={this.setDroppable}
+      >
+        {container.draggables.map(draggable =>
           this.renderDraggable(draggable.ID),
-        ), container)}
-    </DroppableContainer>
-  );
+        )}
+      </DroppableContainer>
+    );
+
+    return this.props.renderDroppableByID(
+      CONTAINER, container);
+  };
 
   renderContent = () => this.props.containers.map(container => (
     this.renderDroppableContainer(container)
   ));
+
+  rebaseDraggable = () => {
+
+  };
 
   render() {
     return (

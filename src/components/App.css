@@ -27,11 +27,12 @@
 .app{
 
 }
+
 .container{
+  float: left;
   color: #ef5fda;
   font-size: 30px;
   background-color: #444444;
-  float: left;
   padding: 3%;
   padding-top: 1%;
   border-style: solid;
