@@ -67,8 +67,8 @@ class DragArea extends Component {
     if (this.draggable) {
       this.setState({
         dragStart: true,
-        lastY: e.clientY,
-        lastX: e.clientX,
+        lastY: e.pageY,
+        lastX: e.pageX,
         lastDroppableId: this.findCurrentContainerID(e.pageX, e.pageY),
       });
     }
@@ -76,15 +76,15 @@ class DragArea extends Component {
 
   onDrag = (e) => {
     const { lastX, lastY, deg } = this.state;
-    const x = this.state.x + e.clientX - lastX;
-    const y = this.state.y + e.clientY - lastY;
+    const x = this.state.x + e.pageX - lastX;
+    const y = this.state.y + e.pageY - lastY;
     this.transformDraggable({ x, y, deg });
     this.setState(prevState => ({
-      x: prevState.x + e.clientX - prevState.lastX,
-      y: prevState.y + e.clientY - prevState.lastY,
-      deg: (e.clientX - prevState.lastX) / 4,
-      lastX: e.clientX,
-      lastY: e.clientY,
+      x: prevState.x + e.pageX - prevState.lastX,
+      y: prevState.y + e.pageY - prevState.lastY,
+      deg: (e.pageX - prevState.lastX) / 4,
+      lastX: e.pageX,
+      lastY: e.pageY,
     }));
   };
 
@@ -100,8 +100,8 @@ class DragArea extends Component {
       this.onDrag(e);
     } else {
       this.setState({
-        lastY: e.clientY,
-        lastX: e.clientX,
+        lastY: e.pageY,
+        lastX: e.pageX,
       });
     }
   };
