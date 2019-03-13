@@ -2,7 +2,6 @@
 .drag{
   background-color: #722f68;
   cursor: move;
-  padding: 10px;
   padding-top: 2px;
   color: #cccccc;
   font-size: 20px;
@@ -13,17 +12,17 @@
   border-style: solid;
   border-width: 2px;
   border-radius: 10px;
-  margin: 4px;
+  align-items: center;
 }
 .draggable{
   transition: transform 50ms linear;
 }
 .droppable{
+
+  float: left;
+  position: relative;
   width: auto;
-}
-.test{
-  background-color: #009900;
-  padding: 5%;
+  height: auto;
 }
 
 .app{
@@ -31,21 +30,22 @@
 }
 
 .container{
-  float: left;
+  position: relative;
   color: #ef5fda;
   font-size: 30px;
   background-color: #444444;
-  padding: 3%;
   padding-top: 1%;
   border-style: solid;
   border-width: 2px;
   border-radius: 10px;
   border-color: #999999;
+  align-content: center;
+  width: 250px;
 }
 .area{
   color: #ef5fda;
   padding: 5%;
   position: absolute;
   background-color: #222222;
-  width: 70%;
+  width: 100%;
 }
