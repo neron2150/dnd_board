@@ -133,9 +133,7 @@ class DragArea extends Component {
   );
 
   renderDroppableContainer = (container) => {
-    const draggables = [];
-    for (const ID in container.draggables) draggables.push(this.renderDraggable(ID));
-
+    const draggables = Object.keys(container.draggables).map(this.renderDraggable);
     const CONTAINER = (
       <DroppableContainer
         key={container.ID}
@@ -150,15 +148,22 @@ class DragArea extends Component {
       CONTAINER, container);
   };
 
-  renderContent = () => Object.values(this.state.containers).map(container => (
-    this.renderDroppableContainer(container)
-  ));
+  renderContent = () => Object.values(this.state.containers).map(this.renderDroppableContainer);
 
   rebaseDraggable = (draggableID, newDroppableID, lastDroppableID) => {
     const containers = Object.assign({}, this.state.containers);
-    containers[newDroppableID].draggables[draggableID] =
-     containers[lastDroppableID].draggables[draggableID];
-    containers[newDroppableID].draggables[draggableID].containerID = newDroppableID;
+    const newDroppable = containers[newDroppableID];
+    containers[newDroppableID] = {
+      ...newDroppable,
+      draggables:
+      {
+        ...newDroppable.draggables,
+        [draggableID]: {
+          ID: draggableID,
+          containerID: newDroppableID,
+        },
+      },
+    };
     delete containers[lastDroppableID].draggables[draggableID];
     this.setState({ containers });
   };
