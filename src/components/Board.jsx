@@ -21,7 +21,6 @@ const createContent = () => {
   return result;
 };
 
-console.log(createContent());
 class Board extends Component {
   renderDraggableByID = ID => (
     <div className="drag">
@@ -36,9 +35,8 @@ class Board extends Component {
     </div>
   );
 
-  onDrop = (draggableID, newContainerID, lastContainerID) => {
-    console.log(draggableID, newContainerID, lastContainerID);
-  };
+  // onDrop = (draggableID, newContainerID, lastContainerID) => {
+  // };
 
   render() {
     return (

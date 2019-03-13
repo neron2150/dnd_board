@@ -41,7 +41,6 @@ class DragArea extends Component {
   stopDrag = (e) => {
     const newDroppable = this.findCurrentContainerID(e.pageX, e.pageY);
     const lastDroppable = this.state.lastDroppableId;
-    console.log(`${newDroppable} && ${newDroppable} !== ${lastDroppable}`);
     if (newDroppable && newDroppable !== lastDroppable) {
       this.onDrop(this.state.draggableId, newDroppable, lastDroppable);
     }
@@ -90,7 +89,7 @@ class DragArea extends Component {
   };
 
   onDrop = (draggableId, newDroppableId, lastDroppableId) => {
-    this.props.onDrop(draggableId, newDroppableId, lastDroppableId);
+    if (this.props.onDrop) this.props.onDrop(draggableId, newDroppableId, lastDroppableId);
     if (this.props.shouldRebase) this.rebaseDraggable(draggableId, newDroppableId, lastDroppableId);
   };
 
