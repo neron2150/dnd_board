@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 class Draggable extends Component {
   draggable = null;
 
-  mouseDown = setDraggable => () => {
+  mouseDown = () => {
     if (this.draggable) {
-      setDraggable(this.draggable, this.props.ID);
+      this.props.setDraggable(this.draggable, this.props.ID);
     }
   };
 
@@ -16,7 +16,7 @@ class Draggable extends Component {
 
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
         className="draggable"
-        onMouseDown={this.mouseDown(this.props.setDraggable)}
+        onMouseDown={this.mouseDown}
         ref={this.setRef}
       >
         {this.props.children}

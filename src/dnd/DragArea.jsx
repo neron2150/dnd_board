@@ -145,8 +145,6 @@ class DragArea extends Component {
     );
   };
 
-  renderContent = () => Object.values(this.state.containers).map(this.renderDroppableContainer);
-
   rebaseDraggable = (draggableID, newDroppableID, lastDroppableID) => {
     this.setState((prevState) => {
       const containers = Object.assign({}, prevState.containers);
@@ -176,7 +174,7 @@ class DragArea extends Component {
         onMouseUp={this.mouseUp}
         onMouseLeave={this.mouseUp}
       >
-        {this.renderContent()}
+        {Object.values(this.state.containers).map(this.renderDroppableContainer)}
       </div>
 
     );

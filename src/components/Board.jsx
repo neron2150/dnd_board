@@ -1,25 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import DragArea from '../dnd/DragArea';
-
-const CREATE_TASKS = (count, containerID) => {
-  const tasks = {};
-  for (let i = 0; i <= count; i++) {
-    const id = Math.random().toString(36).substring(7);
-    tasks[id] = { ID: id, containerID };
-  }
-
-  return tasks;
-};
-
-const createContent = () => {
-  const CONTAINERS_NAMES = ['todo', 'doing', 'done'];
-  const result = {};
-  CONTAINERS_NAMES.forEach((ID) => {
-    result[ID] = { ID, draggables: CREATE_TASKS(5, ID) };
-  });
-  return result;
-};
+import getContent from '../mocks/BoardMocks';
 
 class Board extends Component {
   renderDraggableByID = ID => (
@@ -42,7 +24,7 @@ class Board extends Component {
     return (
       <DragArea
         onDrop={this.onDrop}
-        containers={createContent()}
+        containers={getContent}
         renderDroppableByID={this.renderDroppableByID}
         renderDraggableByID={this.renderDraggableByID}
         shouldRebase

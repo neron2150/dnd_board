@@ -12,7 +12,7 @@
   border-style: solid;
   border-width: 2px;
   border-radius: 10px;
-  align-items: center;
+  align-content: center;
 }
 .draggable{
   transition: transform 50ms linear;
