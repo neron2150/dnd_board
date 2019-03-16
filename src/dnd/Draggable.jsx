@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { DndContext } from './DndContext';
+import cx from 'classnames';
 
 class Draggable extends Component {
   draggable = null;
 
-  mouseDown = setDraggable => () => {
+  mouseDown = () => {
     if (this.draggable) {
-      setDraggable(this.draggable, this.props.id);
+      this.props.setDraggable(this.draggable, this.props.ID);
     }
   };
 
@@ -14,18 +14,17 @@ class Draggable extends Component {
 
   render() {
     return (
-      <DndContext.Consumer>
-        {context => (
-          <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-            className="drag"
-            onMouseDown={this.mouseDown(context.setDraggable)}
-            ref={this.setRef}
-          >
-            <p>{this.props.id}</p>
-            {this.props.children}
-          </div>
-        )}
-      </DndContext.Consumer>
+
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+        className={cx('draggable', {
+          dragging: this.props.dragging,
+        })}
+        onMouseDown={this.mouseDown}
+        ref={this.setRef}
+      >
+        {this.props.children}
+      </div>
+
     );
   }
 }

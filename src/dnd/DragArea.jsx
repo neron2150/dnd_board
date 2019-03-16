@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { DndContext } from './DndContext';
+import DroppableContainer from './DroppableContainer';
+import Draggable from './Draggable';
 
 class DragArea extends Component {
   state = {
@@ -10,13 +11,15 @@ class DragArea extends Component {
     lastY: 0,
     deg: 0,
     draggableId: null,
-    droppableId: null,
+    lastDroppableId: null,
     droppableContainers: [],
+    containers: this.props.containers,
   };
 
   draggable = null;
 
   setDraggable = (draggable, draggableId) => {
+    // TODO: resolve the problem with finding z-index
     this.setState({ draggableId });
     this.draggable = draggable;
   };
@@ -31,18 +34,19 @@ class DragArea extends Component {
   transformDraggable = ({ x, y, deg }) => {
     if (this.draggable) {
       this.draggable.style.transform =
-     `translate(${x}px, ${y}px) rotate(${deg}deg)`;
+      `translate(${x}px, ${y}px) rotate(${deg}deg)`;
     }
   };
 
   stopDrag = (e) => {
     const newDroppable = this.findCurrentContainerID(e.pageX, e.pageY);
-    const lastDroppable = this.state.droppableId;
+    const lastDroppable = this.state.lastDroppableId;
     if (newDroppable && newDroppable !== lastDroppable) {
-      this.onDrop(this.state.draggableId, newDroppable);
+      this.onDrop(this.state.draggableId, newDroppable, lastDroppable);
     }
 
     this.transformDraggable({ x: 0, y: 0, deg: 0 });
+    this.draggable = null;
     this.setState({
       dragStart: false,
       x: 0,
@@ -50,7 +54,7 @@ class DragArea extends Component {
       lastX: 0,
       lastY: 0,
       deg: 0,
-      droppableId: null,
+      lastDroppableId: null,
       draggableId: null,
     });
   };
@@ -60,30 +64,33 @@ class DragArea extends Component {
   };
 
   mouseDown = (e) => {
-    this.setState({
-      dragStart: true,
-      lastY: e.clientY,
-      lastX: e.clientX,
-      droppableId: this.findCurrentContainerID(e.pageX, e.pageY),
-    });
+    if (this.draggable) {
+      this.setState({
+        dragStart: true,
+        lastY: e.pageY,
+        lastX: e.pageX,
+        lastDroppableId: this.findCurrentContainerID(e.pageX, e.pageY),
+      });
+    }
   };
 
   onDrag = (e) => {
     const { lastX, lastY, deg } = this.state;
-    const x = this.state.x + e.clientX - lastX;
-    const y = this.state.y + e.clientY - lastY;
+    const x = this.state.x + e.pageX - lastX;
+    const y = this.state.y + e.pageY - lastY;
     this.transformDraggable({ x, y, deg });
     this.setState(prevState => ({
-      x: prevState.x + e.clientX - prevState.lastX,
-      y: prevState.y + e.clientY - prevState.lastY,
-      deg: (e.clientX - prevState.lastX) / 4,
-      lastX: e.clientX,
-      lastY: e.clientY,
+      x: prevState.x + e.pageX - prevState.lastX,
+      y: prevState.y + e.pageY - prevState.lastY,
+      deg: (e.pageX - prevState.lastX) / 4,
+      lastX: e.pageX,
+      lastY: e.pageY,
     }));
   };
 
-  onDrop = (draggableId, droppableId) => {
-    this.props.onDrop(draggableId, droppableId);
+  onDrop = (draggableId, newDroppableId, lastDroppableId) => {
+    if (this.props.onDrop) this.props.onDrop(draggableId, newDroppableId, lastDroppableId);
+    if (this.props.shouldRebase) this.rebaseDraggable(draggableId, newDroppableId, lastDroppableId);
   };
 
   mouseMove = (e) => {
@@ -93,8 +100,8 @@ class DragArea extends Component {
       this.onDrag(e);
     } else {
       this.setState({
-        lastY: e.clientY,
-        lastX: e.clientX,
+        lastY: e.pageY,
+        lastX: e.pageX,
       });
     }
   };
@@ -112,24 +119,73 @@ class DragArea extends Component {
     return currentContainer ? currentContainer.id : null;
   };
 
+  renderDraggable = ID => (
+
+    <Draggable
+      key={ID}
+      ID={ID}
+      setDraggable={this.setDraggable}
+      dragging={ID === this.state.draggableId}
+    >
+      {this.props.renderDraggableByID(ID)}
+    </Draggable>
+
+  );
+
+  renderDroppableContainer = (container) => {
+    const draggables = Object.keys(container.draggables).map(this.renderDraggable);
+    return (
+      <DroppableContainer
+        key={container.ID}
+        ID={container.ID}
+        setDroppable={this.setDroppable}
+      >
+        {this.props.renderDroppableByID(
+          draggables, container)}
+      </DroppableContainer>
+    );
+  };
+
+  rebaseDraggable = (draggableID, newDroppableID, lastDroppableID) => {
+    this.setState((prevState) => {
+      const containers = Object.assign({}, prevState.containers);
+      const newDroppable = containers[newDroppableID];
+      const oldDroppable = containers[lastDroppableID];
+
+      containers[newDroppableID] = {
+        ...newDroppable,
+        draggables: {
+          ...newDroppable.draggables,
+          [draggableID]: {
+            ID: draggableID,
+            containerID: newDroppableID,
+          },
+        },
+      };
+
+      const updatedOldDraggables = { ...oldDroppable.draggables };
+      delete updatedOldDraggables[draggableID];
+
+      containers[lastDroppableID] = {
+        ...oldDroppable,
+        draggables: updatedOldDraggables,
+      };
+
+      return { containers };
+    });
+  };
+
   render() {
     return (
-      <DndContext.Provider
-        value={{
-          setDraggable: this.setDraggable,
-          setDroppable: this.setDroppable,
-        }}
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+        className="area"
+        onMouseDown={this.mouseDown}
+        onMouseMove={this.mouseMove}
+        onMouseUp={this.mouseUp}
+        onMouseLeave={this.mouseUp}
       >
-        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-          className="area"
-          onMouseDown={this.mouseDown}
-          onMouseMove={this.mouseMove}
-          onMouseUp={this.mouseUp}
-          onMouseLeave={this.mouseUp}
-        >
-          {this.props.children}
-        </div>
-      </DndContext.Provider>
+        {Object.values(this.state.containers).map(this.renderDroppableContainer)}
+      </div>
 
     );
   }

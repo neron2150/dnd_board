@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
-import { DndContext } from './DndContext';
 
 class DroppableContainer extends Component {
-  static contextType = DndContext;
-
   componentDidMount() {
-    this.context.setDroppable(this.container, this.props.id);
+    this.props.setDroppable(this.container, this.props.ID);
   }
 
   render() {
     return (
       <div
-        className="container"
+        className="droppable"
         ref={(el) => {
           this.container = el;
         }}
       >
-        <p>{this.props.id}</p>
+
         {this.props.children}
       </div>
     );
