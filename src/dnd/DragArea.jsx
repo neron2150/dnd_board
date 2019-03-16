@@ -125,6 +125,7 @@ class DragArea extends Component {
       key={ID}
       ID={ID}
       setDraggable={this.setDraggable}
+      dragging={ID === this.state.draggableId}
     >
       {this.props.renderDraggableByID(ID)}
     </Draggable>
@@ -149,10 +150,11 @@ class DragArea extends Component {
     this.setState((prevState) => {
       const containers = Object.assign({}, prevState.containers);
       const newDroppable = containers[newDroppableID];
+      const oldDroppable = containers[lastDroppableID];
+
       containers[newDroppableID] = {
         ...newDroppable,
-        draggables:
-        {
+        draggables: {
           ...newDroppable.draggables,
           [draggableID]: {
             ID: draggableID,
@@ -160,7 +162,15 @@ class DragArea extends Component {
           },
         },
       };
-      delete containers[lastDroppableID].draggables[draggableID];
+
+      const updatedOldDraggables = { ...oldDroppable.draggables };
+      delete updatedOldDraggables[draggableID];
+
+      containers[lastDroppableID] = {
+        ...oldDroppable,
+        draggables: updatedOldDraggables,
+      };
+
       return { containers };
     });
   };

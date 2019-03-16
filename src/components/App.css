@@ -16,11 +16,14 @@
 }
 .draggable{
   transition: transform 50ms linear;
+  z-index: 1;
+}
+.dragging{
+  z-index: 2;
 }
 .droppable{
 
   float: left;
-  position: relative;
   width: auto;
   height: auto;
 }
@@ -30,7 +33,6 @@
 }
 
 .container{
-  position: relative;
   color: #ef5fda;
   font-size: 30px;
   background-color: #444444;
@@ -45,7 +47,7 @@
 .area{
   color: #ef5fda;
   padding: 5%;
-  position: absolute;
   background-color: #222222;
   width: 100%;
+  height: 100vh; /* FIXME */
 }

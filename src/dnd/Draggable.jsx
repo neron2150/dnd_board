@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import cx from 'classnames';
 
 class Draggable extends Component {
   draggable = null;
@@ -15,7 +16,9 @@ class Draggable extends Component {
     return (
 
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-        className="draggable"
+        className={cx('draggable', {
+          dragging: this.props.dragging,
+        })}
         onMouseDown={this.mouseDown}
         ref={this.setRef}
       >

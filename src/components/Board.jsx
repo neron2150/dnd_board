@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import DragArea from '../dnd/DragArea';
-import getContent from '../mocks/BoardMocks';
+import getContent from '../mocks/board';
 
 class Board extends Component {
   renderDraggableByID = ID => (
