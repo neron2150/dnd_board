@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 
 class Draggable extends Component {
   draggable = null;
@@ -29,4 +30,10 @@ class Draggable extends Component {
   }
 }
 
+Draggable.propTypes = {
+  ID: PropTypes.string.isRequired,
+  setDraggable: PropTypes.func.isRequired,
+  dragging: PropTypes.bool.isRequired,
+  children: PropTypes.element.isRequired,
+};
 export default Draggable;

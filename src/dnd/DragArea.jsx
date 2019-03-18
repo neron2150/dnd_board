@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import DroppableContainer from './DroppableContainer';
 import Draggable from './Draggable';
 
@@ -190,4 +191,15 @@ class DragArea extends Component {
     );
   }
 }
+DragArea.defaultProps = {
+  shouldRebase: true,
+};
+
+DragArea.propTypes = {
+  onDrop: PropTypes.func.isRequired,
+  containers: PropTypes.object.isRequired,
+  renderDroppableByID: PropTypes.func.isRequired,
+  renderDraggableByID: PropTypes.func.isRequired,
+  shouldRebase: PropTypes.bool,
+};
 export default DragArea;

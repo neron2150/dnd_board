@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class DroppableContainer extends Component {
   componentDidMount() {
@@ -19,5 +20,8 @@ class DroppableContainer extends Component {
     );
   }
 }
-
+DroppableContainer.propTypes = {
+  ID: PropTypes.string.isRequired,
+  children: PropTypes.element.isRequired,
+};
 export default DroppableContainer;
