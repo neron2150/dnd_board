@@ -17,8 +17,9 @@ class Board extends Component {
     </div>
   );
 
-  // onDrop = (draggableID, newContainerID, lastContainerID) => {
-  // };
+  onDrop = (/* draggableID, newContainerID, lastContainerID */) => {
+
+  };
 
   render() {
     return (
