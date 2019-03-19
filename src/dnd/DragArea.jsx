@@ -4,6 +4,16 @@ import DroppableContainer from './DroppableContainer';
 import Draggable from './Draggable';
 
 class DragArea extends Component {
+  static getDerivedStateFromProps = (props, state) => {
+    if (props.containers !== state.prevContainers) {
+      return {
+        containers: props.containers,
+        droppableContainers: [],
+        prevContainers: props.containers,
+      };
+    } return null;
+  };
+
   state = {
     dragStart: false,
     x: 0,
@@ -15,6 +25,7 @@ class DragArea extends Component {
     lastDroppableId: null,
     droppableContainers: [],
     containers: this.props.containers,
+    prevContainers: this.props.containers,
   };
 
   draggable = null;
@@ -149,6 +160,7 @@ class DragArea extends Component {
 
   rebaseDraggable = (draggableID, newDroppableID, lastDroppableID) => {
     this.setState((prevState) => {
+      console.log(prevState);
       const containers = Object.assign({}, prevState.containers);
       const newDroppable = containers[newDroppableID];
       const oldDroppable = containers[lastDroppableID];
@@ -171,10 +183,18 @@ class DragArea extends Component {
         ...oldDroppable,
         draggables: updatedOldDraggables,
       };
-
+      console.log('+++', containers);
       return { containers };
     });
   };
+
+  // componentWillReceiveProps = (nextProps) => {
+  //   this.setState({ containers: nextProps.containers });
+  // };
+  // shooldComponentUpdate = (nextProps) => {
+  //   this.setState({ containers: nextProps.containers });
+  //   return false;
+  // };
 
   render() {
     return (
