@@ -116,6 +116,7 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^17.1.0"
+    "eslint-config-airbnb": "^17.1.0",
+    "prop-types": "^15.7.2"
   }
 }
