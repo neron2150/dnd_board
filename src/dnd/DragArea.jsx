@@ -197,9 +197,18 @@ DragArea.defaultProps = {
 
 DragArea.propTypes = {
   onDrop: PropTypes.func.isRequired,
-  containers: PropTypes.object.isRequired,
   renderDroppableByID: PropTypes.func.isRequired,
   renderDraggableByID: PropTypes.func.isRequired,
+  containers: PropTypes.objectOf(PropTypes.shape({
+    ID: PropTypes.string.isRequired,
+    droppables: PropTypes.objectOf(PropTypes.shape({
+      ID: PropTypes.string.isRequired,
+      draggables: PropTypes.objectOf(PropTypes.shape({
+        ID: PropTypes.string.isRequired,
+        containerID: PropTypes.string.isRequired,
+      }).isRequired),
+    }).isRequired),
+  }).isRequired).isRequired,
   shouldRebase: PropTypes.bool,
 };
 export default DragArea;
