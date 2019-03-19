@@ -1,30 +1,31 @@
 import React, { Component } from 'react';
 import './App.css';
 import DragArea from '../dnd/DragArea';
-import getContent from '../mocks/board';
-import getTodos from '../services/TodoApi';
-import prepareData from '../utils/prepareDataForDND';
+import { getTodos } from '../services';
+import getDNDModel from '../utils/dnd';
 
 class Board extends Component {
   state = {
-    containers: null,
+    containers: {},
     todos: null,
   };
 
   bindData = (todos) => {
-    this.setState({ todos, containers: prepareData(todos) });
+    this.setState({ todos, containers: getDNDModel(todos) });
   };
 
   componentDidMount = () => {
     getTodos(this.bindData);
-    console.log('готово');
   };
 
-  renderDraggableByID = ID => (
-    <div className="drag">
-      {ID}
-    </div>
-  );
+  renderDraggableByID = (ID) => {
+    const foundTodo = this.state.todos.find(
+      todo => todo.id.toString() === ID) || {};
+    return (
+      <div className="drag">
+        {foundTodo.title}
+      </div>);
+  };
 
   renderDroppableByID = (content, containerInfo) => (
     <div className="container">
@@ -33,20 +34,10 @@ class Board extends Component {
     </div>
   );
 
-  onDrop = (/* draggableID, newContainerID, lastContainerID */) => {
-
-  };
-
   render() {
-    console.log('render', this.state.containers);
     return (
       <DragArea
-        onDrop={this.onDrop}
-        containers={
-          this.state.containers
-            ? this.state.containers
-            : getContent()
-        }
+        containers={this.state.containers}
         renderDroppableByID={this.renderDroppableByID}
         renderDraggableByID={this.renderDraggableByID}
         shouldRebase

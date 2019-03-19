@@ -25,13 +25,12 @@ class DragArea extends Component {
     lastDroppableId: null,
     droppableContainers: [],
     containers: this.props.containers,
-    prevContainers: this.props.containers,
+    prevContainers: this.props.containers, // eslint-disable-line react/no-unused-state
   };
 
   draggable = null;
 
   setDraggable = (draggable, draggableId) => {
-    // TODO: resolve the problem with finding z-index
     this.setState({ draggableId });
     this.draggable = draggable;
   };
@@ -160,7 +159,6 @@ class DragArea extends Component {
 
   rebaseDraggable = (draggableID, newDroppableID, lastDroppableID) => {
     this.setState((prevState) => {
-      console.log(prevState);
       const containers = Object.assign({}, prevState.containers);
       const newDroppable = containers[newDroppableID];
       const oldDroppable = containers[lastDroppableID];
@@ -183,18 +181,9 @@ class DragArea extends Component {
         ...oldDroppable,
         draggables: updatedOldDraggables,
       };
-      console.log('+++', containers);
       return { containers };
     });
   };
-
-  // componentWillReceiveProps = (nextProps) => {
-  //   this.setState({ containers: nextProps.containers });
-  // };
-  // shooldComponentUpdate = (nextProps) => {
-  //   this.setState({ containers: nextProps.containers });
-  //   return false;
-  // };
 
   render() {
     return (
@@ -213,10 +202,11 @@ class DragArea extends Component {
 }
 DragArea.defaultProps = {
   shouldRebase: true,
+  onDrop: null,
 };
 
 DragArea.propTypes = {
-  onDrop: PropTypes.func.isRequired,
+  onDrop: PropTypes.func,
   renderDroppableByID: PropTypes.func.isRequired,
   renderDraggableByID: PropTypes.func.isRequired,
   containers: PropTypes.objectOf(PropTypes.shape({
