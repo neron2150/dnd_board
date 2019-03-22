@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Todo from './Todo';
 import DragArea from '../dnd/DragArea';
 import { getTodos } from '../services';
 import getDNDModel from '../utils/dnd';
@@ -22,9 +23,12 @@ class Board extends Component {
     const foundTodo = this.state.todos.find(
       todo => todo.id.toString() === ID) || {};
     return (
-      <div className="drag">
-        {foundTodo.title}
-      </div>);
+      <Todo
+        userId={foundTodo.userId}
+        title={foundTodo.title}
+
+      />
+    );
   };
 
   renderDroppableByID = (content, containerInfo) => (

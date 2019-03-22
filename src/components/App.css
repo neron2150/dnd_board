@@ -1,5 +1,5 @@
 
-.drag{
+.todo{
   background-color: #722f68;
   cursor: move;
   padding-top: 2px;
@@ -7,8 +7,8 @@
   font-size: 20px;
   border-color: #999999;
   text-align: center;
-  width:200px;
-  height: 100px;
+  width:300px;
+  height: 200px;
   border-style: solid;
   border-width: 2px;
   border-radius: 10px;
@@ -42,7 +42,7 @@
   border-radius: 10px;
   border-color: #999999;
   align-content: center;
-  width: 250px;
+  width: 350px;
 }
 .area{
   color: #ef5fda;
