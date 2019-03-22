@@ -4,6 +4,16 @@ import DroppableContainer from './DroppableContainer';
 import Draggable from './Draggable';
 
 class DragArea extends Component {
+  static getDerivedStateFromProps = (props, state) => {
+    if (props.containers !== state.prevContainers) {
+      return {
+        containers: props.containers,
+        droppableContainers: [],
+        prevContainers: props.containers,
+      };
+    } return null;
+  };
+
   state = {
     dragStart: false,
     x: 0,
@@ -15,12 +25,12 @@ class DragArea extends Component {
     lastDroppableId: null,
     droppableContainers: [],
     containers: this.props.containers,
+    prevContainers: this.props.containers, // eslint-disable-line react/no-unused-state
   };
 
   draggable = null;
 
   setDraggable = (draggable, draggableId) => {
-    // TODO: resolve the problem with finding z-index
     this.setState({ draggableId });
     this.draggable = draggable;
   };
@@ -171,7 +181,6 @@ class DragArea extends Component {
         ...oldDroppable,
         draggables: updatedOldDraggables,
       };
-
       return { containers };
     });
   };
@@ -193,10 +202,11 @@ class DragArea extends Component {
 }
 DragArea.defaultProps = {
   shouldRebase: true,
+  onDrop: null,
 };
 
 DragArea.propTypes = {
-  onDrop: PropTypes.func.isRequired,
+  onDrop: PropTypes.func,
   renderDroppableByID: PropTypes.func.isRequired,
   renderDraggableByID: PropTypes.func.isRequired,
   containers: PropTypes.objectOf(PropTypes.shape({

@@ -17,4 +17,4 @@ const createContent = () => {
   return result;
 };
 
-export default createContent();
+export default createContent;
