@@ -1,3 +1,5 @@
+import CONTAINERS from '../constants';
+
 const prepareData = (data) => {
   const result = {};
   result.todo1 = { ID: 'todo1', draggables: {} };
@@ -5,12 +7,13 @@ const prepareData = (data) => {
   result.done1 = { ID: 'done1', draggables: {} };
 
   data.forEach((todo) => {
+    const todoID = todo.id.toString();
     if (todo.completed) {
-      result.done1.draggables[todo.id.toString()] =
-      { ID: todo.id.toString(), containerID: 'done1' };
+      result.done1.draggables[todoID] =
+      { ID: todoID, containerID: 'done1' };
     } else {
-      result.todo1.draggables[todo.id.toString()] =
-      { ID: todo.id.toString(), containerID: 'todo1' };
+      result.todo1.draggables[todoID] =
+      { ID: todoID, containerID: 'todo1' };
     }
   });
   return result;
